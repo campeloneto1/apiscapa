@@ -14,5 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    //return Redirect::to('http://localhost/scapa');
     return view('welcome');
 });

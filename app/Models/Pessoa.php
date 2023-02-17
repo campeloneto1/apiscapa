@@ -51,6 +51,11 @@ class Pessoa extends Model
         return $this->belongsTo(Nivel::class)->without('orgao');
     }*/
 
+    public function acessos()
+    {
+        return $this->hasMany(Acesso::class);
+    }
+
     public function sexo()
     {
         return $this->belongsTo(Sexo::class);

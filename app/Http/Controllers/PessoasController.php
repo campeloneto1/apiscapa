@@ -97,7 +97,7 @@ class PessoasController extends Controller
      */
     public function show($id)
     {
-        return Pessoa::find($id);
+        return Pessoa::with('acessos')->find($id);
     }
 
     /**

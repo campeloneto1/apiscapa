@@ -26,6 +26,16 @@ class EstadosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function index2()
+    {
+        return Estado::orderBy('nome')->paginate(10);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function where($id)
     {
         return Estado::find($id)->cidades()->get();

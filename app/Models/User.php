@@ -74,6 +74,8 @@ class User extends Authenticatable
         return $this->belongsTo(Orgao::class);
     } 
 
+   
+
     public function created_by()
     {
         return $this->belongsTo(User::class, 'created_by');

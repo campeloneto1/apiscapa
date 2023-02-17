@@ -57,9 +57,12 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::get('orgaos/{id}/setores', [OrgaosController::class, 'where_setores']);
     Route::get('paises/{id}/estados', [PaisesController::class, 'where']);
     Route::get('users/{id}/resetpass', [UsersController::class, 'resetPass']);
+    Route::post('users-changpass',  [UsersController::class, 'changPass']);
 
     Route::get('inicio-acessos-dia', [InicioController::class, 'acessosDia']);
     Route::get('inicio-acessos-mes', [InicioController::class, 'acessosMes']);
     Route::get('inicio-acessos-por-dia', [InicioController::class, 'acessosPorDia']);
     Route::get('inicio-acessos-por-setor', [InicioController::class, 'acessosPorSetor']);
+
+    //Route::get('estados2', [EstadosController::class, 'index2']);
 });
