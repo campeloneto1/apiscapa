@@ -38,9 +38,11 @@ class PerfisController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
          $data = new Perfil;
    
-        
         $data->nome = $request->nome; 
         $data->administrador = $request->administrador; 
         $data->gestor = $request->gestor; 
@@ -126,6 +128,10 @@ class PerfisController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = Perfil::find($id);
         $dataold = $data;
 
@@ -192,6 +198,9 @@ class PerfisController extends Controller
      */
     public function destroy($id)
     {
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = Perfil::find($id);
          
          if($data->delete()){

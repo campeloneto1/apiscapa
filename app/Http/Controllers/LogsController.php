@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Log;
 
 class LogsController extends Controller
 {
@@ -15,7 +16,10 @@ class LogsController extends Controller
      */
     public function index()
     {
-        //
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
+        return Log::orderBy('id', 'desc')->get();
     }
 
     /**
@@ -47,7 +51,7 @@ class LogsController extends Controller
      */
     public function show($id)
     {
-        //
+         return Log::find($id);
     }
 
     /**
@@ -81,6 +85,26 @@ class LogsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
+        $data = Log::find($id);
+         
+        if($data->delete()){
+           $log = new Log;
+           $log->user_id = Auth::id();
+           $log->mensagem = 'Excluiu um Log';
+           $log->table = 'logs';
+           $log->action = 3;
+           $log->fk = $data->id;
+           $log->object = $data;
+           $log->save();
+           return response()->json('Log excluído com sucesso!', 200);
+         }else{
+           $erro = "Não foi possivel realizar a exclusão!";
+            $cod = 171;
+            $resposta = ['erro' => $erro, 'cod' => $cod];
+            return response()->json($resposta, 404);
+         }
     }
 }

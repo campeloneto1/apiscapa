@@ -53,7 +53,7 @@ class Pessoa extends Model
 
     public function acessos()
     {
-        return $this->hasMany(Acesso::class);
+        return $this->hasMany(Acesso::class)->orderBy('id', 'desc');
     }
 
     public function sexo()

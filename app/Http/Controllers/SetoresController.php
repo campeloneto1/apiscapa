@@ -44,6 +44,9 @@ class SetoresController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::user()->perfil->setores_cad){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = new Setor;
    
         $data->orgao_id = $request->orgao_id;   
@@ -103,6 +106,9 @@ class SetoresController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!Auth::user()->perfil->setores_edt){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = Setor::find($id);
         $dataold = $data;
 
@@ -141,6 +147,9 @@ class SetoresController extends Controller
      */
     public function destroy($id)
     {
+        if(!Auth::user()->perfil->setores_del){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = Setor::find($id);
          
          if($data->delete()){

@@ -44,6 +44,11 @@ class Orgao extends Model
         return $this->hasMany(Setor::class, 'orgao_id')->without('orgao');
     }
 
+    public function postos()
+    {
+        return $this->hasMany(Posto::class, 'orgao_id')->without('orgao');
+    }
+
     public function niveis()
     {
         return $this->hasMany(Nivel::class, 'orgao_id')->without('orgao');

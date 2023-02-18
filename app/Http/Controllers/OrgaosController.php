@@ -16,7 +16,7 @@ class OrgaosController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {        
         //return Orgao::orderBy('nome')->get();
         $user = Auth::user();
         if($user->perfil->administrador){
@@ -31,10 +31,21 @@ class OrgaosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function where_setores($id)
+    public function whereSetores($id)
     {
         return Orgao::find($id)->setores()->get();
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function wherePostos($id)
+    {
+        return Orgao::find($id)->postos()->get();
+    }
+
 
     
     /**
@@ -42,7 +53,7 @@ class OrgaosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function where_niveis($id)
+    public function whereNiveis($id)
     {
         return Orgao::find($id)->niveis()->get();
     }
@@ -55,6 +66,9 @@ class OrgaosController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::user()->perfil->orgaos_cad){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = new Orgao;
    
         $data->nome = $request->nome;   
@@ -113,6 +127,9 @@ class OrgaosController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!Auth::user()->perfil->orgaos_edt){
+            return response()->json('Não Autorizado', 401);
+        }
          $data = Orgao::find($id);
         $dataold = $data;
 
@@ -150,6 +167,9 @@ class OrgaosController extends Controller
      */
     public function destroy($id)
     {
+        if(!Auth::user()->perfil->orgaos_del){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = Orgao::find($id);
          
          if($data->delete()){

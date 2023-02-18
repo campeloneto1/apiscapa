@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use App\Models\Pessoa;
 use App\Models\Log;
 
@@ -18,12 +19,9 @@ class PessoasController extends Controller
     public function index()
     {
        //return Pessoa::orderBy('nome')->get();
-       $user = Auth::user();
-        if($user->perfil->administrador){
+       
              return Pessoa::orderBy('nome')->get();
-        }else{ 
-            return Pessoa::where('orgao_id', $user->orgao_id)->orderBy('nome')->get();
-        } 
+        
     }
 
     /**
@@ -44,8 +42,12 @@ class PessoasController extends Controller
      */
     public function store(Request $request)
     {
+
+        if(!Auth::user()->perfil->pessoas_cad){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = new Pessoa;
-   
+        
         //$data->orgao_id = $request->orgao_id;   
         //$data->nivel_id = $request->nivel_id;   
         $data->sexo_id = $request->sexo_id;   
@@ -60,6 +62,7 @@ class PessoasController extends Controller
         $data->mae = $request->mae; 
         $data->pai = $request->pai; 
         $data->obs = $request->obs; 
+        $data->foto = $request->foto; 
         $data->key = bcrypt($request->cpf); 
 
          $data->cep = $request->cep;
@@ -120,6 +123,9 @@ class PessoasController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!Auth::user()->perfil->pessoas_edt){
+            return response()->json('Não Autorizado', 401);
+        }
          $data = Pessoa::find($id);
         $dataold = $data;
 
@@ -175,6 +181,9 @@ class PessoasController extends Controller
      */
     public function destroy($id)
     {
+        if(!Auth::user()->perfil->pessoas_del){
+            return response()->json('Não Autorizado', 401);
+        }
          $data = Pessoa::find($id);
          
          if($data->delete()){
@@ -193,5 +202,25 @@ class PessoasController extends Controller
             $resposta = ['erro' => $erro, 'cod' => $cod];
             return response()->json($resposta, 404);
           }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function uploadFoto(Request $request)
+    {
+        //return $request->image;
+        $image = $request->image;  // your base64 encoded
+        $image = str_replace('data:image/jpeg;base64,', '', $image);
+        $image = str_replace(' ', '+', $image);
+        $imageName = date('dmYHis').".".'jpg';
+
+        File::put(storage_path(). '/app/public/' . $imageName, base64_decode($image));
+        
+        return response()->json($imageName, 200);
+      
     }
 }

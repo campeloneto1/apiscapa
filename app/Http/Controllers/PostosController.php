@@ -44,6 +44,9 @@ class PostosController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::user()->perfil->postos_cad){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = new Posto;
    
         $data->orgao_id = $request->orgao_id;   
@@ -101,6 +104,9 @@ class PostosController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!Auth::user()->perfil->postos_edt){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = Posto::find($id);
         $dataold = $data;
 
@@ -138,6 +144,9 @@ class PostosController extends Controller
      */
     public function destroy($id)
     {
+        if(!Auth::user()->perfil->postos_del){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = Posto::find($id);
          
          if($data->delete()){

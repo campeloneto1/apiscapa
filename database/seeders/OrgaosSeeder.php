@@ -16,9 +16,8 @@ class OrgaosSeeder extends Seeder
     public function run()
     {
         $init = [
-            0 => [ 'nome' => 'Palácio da Abolição' ],
+            0 => [ 'nome' => 'Casa Civil' ],
             1 => [ 'nome' => 'Vice-Governadoria' ],
-            2 => [ 'nome' => 'Residência Oficial' ],
           
         ];
         DB::table('orgaos')->insert($init);

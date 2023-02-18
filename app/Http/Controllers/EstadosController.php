@@ -60,6 +60,9 @@ class EstadosController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = new Estado;
 
         $data->pais_id = $request->pais_id;     
@@ -117,6 +120,9 @@ class EstadosController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = Estado::find($id);
         $dataold = $data;
 
@@ -153,6 +159,9 @@ class EstadosController extends Controller
      */
     public function destroy($id)
     {
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = Estado::find($id);
          
          if($data->delete()){

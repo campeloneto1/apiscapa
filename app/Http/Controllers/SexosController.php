@@ -17,6 +17,7 @@ class SexosController extends Controller
      */
     public function index()
     {
+        
         return Sexo::orderBy('nome')->get();
     }
 
@@ -38,6 +39,9 @@ class SexosController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = new Sexo;
    
         $data->nome = $request->nome;   
@@ -70,6 +74,9 @@ class SexosController extends Controller
      */
     public function show($id)
     {
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
         return Sexo::find($id);
     }
 
@@ -93,6 +100,9 @@ class SexosController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = Sexo::find($id);
         $dataold = $data;
 
@@ -127,6 +137,9 @@ class SexosController extends Controller
      */
     public function destroy($id)
     {
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
          $data = Sexo::find($id);
          
          if($data->delete()){

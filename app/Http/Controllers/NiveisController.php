@@ -44,6 +44,7 @@ class NiveisController extends Controller
      */
     public function store(Request $request)
     {
+        
          $data = new Nivel;
    
         $data->orgao_id = $request->orgao_id;   

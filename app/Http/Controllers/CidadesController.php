@@ -17,6 +17,7 @@ class CidadesController extends Controller
      */
     public function index()
     {
+
         return Cidade::orderBy('nome')->limit(100)->get();
     }
 
@@ -48,6 +49,9 @@ class CidadesController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = new Cidade;
 
         $data->estado_id = $request->estado_id;     
@@ -104,6 +108,9 @@ class CidadesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = Cidade::find($id);
         $dataold = $data;
 
@@ -139,6 +146,9 @@ class CidadesController extends Controller
      */
     public function destroy($id)
     {
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = Cidade::find($id);
          
          if($data->delete()){

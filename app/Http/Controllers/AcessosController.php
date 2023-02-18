@@ -18,12 +18,9 @@ class AcessosController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        if($user->perfil->administrador){
+        
              return Acesso::orderBy('id', 'desc')->get();
-        }else{ 
-            return Acesso::where('orgao_id', $user->orgao_id)->orderBy('id', 'desc')->get();
-        }   
+       
     }
 
     /**
@@ -44,6 +41,9 @@ class AcessosController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::user()->perfil->acessos_cad){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = new Acesso;
    
         $data->posto_id = $request->posto_id;   
@@ -103,6 +103,9 @@ class AcessosController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!Auth::user()->perfil->acessos_edt){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = Acesso::find($id);
         $dataold = $data;
 
@@ -139,6 +142,9 @@ class AcessosController extends Controller
      */
     public function destroy($id)
     {
+        if(!Auth::user()->perfil->acessos_del){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = Acesso::find($id);
          
          if($data->delete()){

@@ -34,6 +34,7 @@ class UsersController extends Controller
      */
     public function changPass(Request $request)
     {
+
         $data = User::find(Auth::id());
     
         $data->password = bcrypt($request->senha);
@@ -69,6 +70,9 @@ class UsersController extends Controller
      */
     public function resetPass($id)
     {
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = User::find($id);
     
         $data->password = bcrypt($data->cpf);
@@ -102,6 +106,9 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = new User;
 
         $data->orgao_id = $request->orgao_id;   
@@ -164,6 +171,9 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = User::find($id);
         $dataold = $data;
 
@@ -204,6 +214,9 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = User::find($id);
          
          if($data->delete()){

@@ -48,6 +48,9 @@ class PaisesController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = new Pais;
 
         $data->nome = $request->nome;   
@@ -103,6 +106,9 @@ class PaisesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = Pais::find($id);
         $dataold = $data;
 
@@ -137,6 +143,9 @@ class PaisesController extends Controller
      */
     public function destroy($id)
     {
+        if(!Auth::user()->perfil->administrador){
+            return response()->json('Não Autorizado', 401);
+        }
         $data = Pais::find($id);
          
         if($data->delete()){

@@ -16,12 +16,8 @@ class PostosSeeder extends Seeder
     public function run()
     {
          $init = [
-            0 => [ 'orgao_id' => 1, 'nome' => 'Posto 01' ],
-            1 => [ 'orgao_id' => 1, 'nome' => 'Posto 02' ],
-            2 => [ 'orgao_id' => 1, 'nome' => 'Bravo 01' ],
-            3 => [ 'orgao_id' => 1, 'nome' => 'Bravo 02' ],
-            4 => [ 'orgao_id' => 1, 'nome' => 'Bravo 03' ],
-            5 => [ 'orgao_id' => 1, 'nome' => 'Bravo 04' ],
+            0 => [ 'orgao_id' => 1, 'nome' => 'Bravo 01' ],
+            1 => [ 'orgao_id' => 2, 'nome' => 'Recepção' ],           
           
         ];
         DB::table('postos')->insert($init);
