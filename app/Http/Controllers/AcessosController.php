@@ -18,8 +18,15 @@ class AcessosController extends Controller
      */
     public function index()
     {
-        
-             return Acesso::orderBy('id', 'desc')->get();
+        $data = Carbon::now();
+        //return Acesso::orderBy('id', 'desc')->get();
+        $user = Auth::user();
+        if($user->perfil->administrador){
+             return Acesso::whereDate('data_hora', $data)->orderBy('id', 'desc')->get();
+        }else{ 
+            return Acesso::whereDate('data_hora', $data)->whereRelation('setor','orgao_id', $user->orgao_id)->orderBy('id', 'desc')->get();
+        } 
+
        
     }
 

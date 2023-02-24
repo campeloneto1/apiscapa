@@ -60,6 +60,7 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::get('orgaos/{id}/postos', [OrgaosController::class, 'wherePostos']);
     Route::get('orgaos/{id}/setores', [OrgaosController::class, 'whereSetores']);
     Route::get('paises/{id}/estados', [PaisesController::class, 'where']);
+    Route::get('pessoas/{id}/checkcpf',  [PessoasController::class, 'checkCpf']);
     Route::get('users/{id}/resetpass', [UsersController::class, 'resetPass']);
     Route::post('users-changpass',  [UsersController::class, 'changPass']);
 
@@ -69,6 +70,7 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::get('inicio-acessos-por-setor', [InicioController::class, 'acessosPorSetor']);
 
     Route::post('upload-foto', [PessoasController::class, 'uploadFoto']);
+    Route::post('upload-foto2', [PessoasController::class, 'uploadFoto2']);
 
     Route::post('rel-acessos', [RelatoriosController::class, 'relAcessos']);
 

@@ -17,6 +17,12 @@ class PerfisController extends Controller
      */
     public function index()
     {
+        if(!Auth::user()->perfil->administrador){
+            return Perfil::where(function ($query) {
+                        $query->whereNull('administrador')
+                              ->orWhere('administrador', '=!', 1);
+                    })->orderBy('nome')->get();
+        }
         return Perfil::orderBy('nome')->get();
     }
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Pessoa extends Model
 {
@@ -52,8 +53,14 @@ class Pessoa extends Model
     }*/
 
     public function acessos()
-    {
-        return $this->hasMany(Acesso::class)->orderBy('id', 'desc');
+    {        
+         $user = Auth::user();
+        if($user->perfil->administrador){
+             return $this->hasMany(Acesso::class)->orderBy('id', 'desc');
+        }else{ 
+            return $this->hasMany(Acesso::class)->whereRelation('setor','orgao_id', $user->orgao_id)->orderBy('id', 'desc');
+        } 
+
     }
 
     public function sexo()

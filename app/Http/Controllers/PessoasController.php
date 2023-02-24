@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Pessoa;
 use App\Models\Log;
 
@@ -22,6 +23,17 @@ class PessoasController extends Controller
        
              return Pessoa::orderBy('nome')->get();
         
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function checkCpf(Request $request)
+    {
+       //return Pessoa::orderBy('nome')->get();    
+        return Pessoa::where('cpf', $request->id)->get();        
     }
 
     /**
@@ -185,7 +197,7 @@ class PessoasController extends Controller
             return response()->json('Não Autorizado', 401);
         }
          $data = Pessoa::find($id);
-         
+         Storage::delete($data->foto);
          if($data->delete()){
             $log = new Log;
             $log->user_id = Auth::id();
@@ -222,5 +234,53 @@ class PessoasController extends Controller
         
         return response()->json($imageName, 200);
       
+    }
+
+/**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+     public function uploadFoto2(Request $request){  
+        if ($request->hasFile('image')){
+            $file      = $request->file('image');
+            $filename  = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $picture   = date('dmYHis').".".$extension;
+            //move image to public/img folder
+            //$file->move(public_path('imagens'), $picture);
+            $file->move(storage_path().'/app/public/', $picture);
+
+
+            $data = Pessoa::find($request->id);
+            $dataold = Pessoa::find($request->id);
+            $data->foto =  $picture;
+
+            if($data->save()){
+                $log = new Log;
+                $log->user_id = Auth::id();
+                $log->mensagem = 'Editou foto de pessoa';
+                $log->table = 'pessoas';
+                $log->action = 2;
+                $log->fk = $data->id;
+                $log->object = $data;
+                $log->object_old = $dataold;
+                $log->save();
+              return response()->json('Informação cadastrada com sucesso!', 200);
+            }else{
+                $erro = "Não foi possivel realizar a edição!";
+                $cod = 171;
+                $resposta = ['erro' => $erro, 'cod' => $cod];
+               return response()->json($resposta, 404);
+            }
+        }else{
+              $erro = "Não foi possivel realizar a edição!";
+                $cod = 171;
+                $resposta = ['erro' => $erro, 'cod' => $cod];
+               return response()->json($resposta, 404);
+        }
+  
+        
     }
 }

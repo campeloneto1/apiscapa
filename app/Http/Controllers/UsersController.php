@@ -70,7 +70,7 @@ class UsersController extends Controller
      */
     public function resetPass($id)
     {
-        if(!Auth::user()->perfil->administrador){
+        if(!Auth::user()->perfil->gestor){
             return response()->json('Não Autorizado', 401);
         }
         $data = User::find($id);
@@ -106,7 +106,7 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        if(!Auth::user()->perfil->administrador){
+        if(!Auth::user()->perfil->gestor){
             return response()->json('Não Autorizado', 401);
         }
         $data = new User;
@@ -171,7 +171,7 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if(!Auth::user()->perfil->administrador){
+        if(!Auth::user()->perfil->gestor){
             return response()->json('Não Autorizado', 401);
         }
         $data = User::find($id);
@@ -214,7 +214,7 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        if(!Auth::user()->perfil->administrador){
+        if(!Auth::user()->perfil->gestor){
             return response()->json('Não Autorizado', 401);
         }
         $data = User::find($id);

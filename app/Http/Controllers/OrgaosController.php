@@ -22,7 +22,7 @@ class OrgaosController extends Controller
         if($user->perfil->administrador){
              return Orgao::orderBy('nome')->get();
         }else{ 
-            return Orgao::find($user->orgao_id);
+            return Orgao::where('id', $user->orgao_id)->get();
         } 
     }
 
