@@ -23,7 +23,12 @@ return new class extends Migration
             $table->boolean('acessos')->nullable();    
             $table->boolean('acessos_cad')->nullable();    
             $table->boolean('acessos_edt')->nullable();    
-            $table->boolean('acessos_del')->nullable();    
+            $table->boolean('acessos_del')->nullable();  
+
+             $table->boolean('eventos')->nullable();    
+            $table->boolean('eventos_cad')->nullable();    
+            $table->boolean('eventos_edt')->nullable();    
+            $table->boolean('eventos_del')->nullable();    
 
             $table->boolean('orgaos')->nullable();    
             $table->boolean('orgaos_cad')->nullable();    

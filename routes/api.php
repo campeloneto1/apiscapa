@@ -4,9 +4,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AcessosController;
 use App\Http\Controllers\CidadesController;
 use App\Http\Controllers\EstadosController;
-use App\Http\Controllers\AcessosController;
+use App\Http\Controllers\EventosController;
+use App\Http\Controllers\EventosPessoasController;
+
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\NiveisController;
@@ -43,6 +46,8 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::apiResource('acessos', AcessosController::class);
     Route::apiResource('cidades', CidadesController::class);
     Route::apiResource('estados', EstadosController::class);
+    Route::apiResource('eventos', EventosController::class);
+    Route::apiResource('eventos-pessoas', EventosPessoasController::class);
     Route::apiResource('logs', LogsController::class);
     Route::apiResource('niveis', NiveisController::class);
     Route::apiResource('niveis-postos', NiveisPostosController::class);
