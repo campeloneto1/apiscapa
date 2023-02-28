@@ -245,13 +245,19 @@ class PessoasController extends Controller
      public function uploadFoto2(Request $request){  
         if ($request->hasFile('image')){
             $file      = $request->file('image');
+          
+
+            if($request->file('image')->getSize() > 1000000){
+                 $erro = "Tamanho máximo permitido é 1mb!";
+                $cod = 171;
+                $resposta = ['erro' => $erro, 'cod' => $cod];
+               return response()->json($resposta, 403);
+            }
+
             $filename  = $file->getClientOriginalName();
             $extension = $file->getClientOriginalExtension();
             $picture   = date('dmYHis').".".$extension;
-            //move image to public/img folder
-            //$file->move(public_path('imagens'), $picture);
             $file->move(storage_path().'/app/public/', $picture);
-
 
             $data = Pessoa::find($request->id);
             $dataold = Pessoa::find($request->id);

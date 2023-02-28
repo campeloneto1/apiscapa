@@ -60,6 +60,7 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::apiResource('sexos', SexosController::class);
     Route::apiResource('users', UsersController::class);
 
+    Route::get('eventos-pessoas/{id}/presente', [EventosPessoasController::class, 'presente']);
     Route::get('estados/{id}/cidades', [EstadosController::class, 'where']);
     Route::get('orgaos/{id}/niveis', [OrgaosController::class, 'whereNiveis']);
     Route::get('orgaos/{id}/postos', [OrgaosController::class, 'wherePostos']);

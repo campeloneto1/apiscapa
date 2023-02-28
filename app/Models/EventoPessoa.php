@@ -39,7 +39,7 @@ class EventoPessoa extends Model
      */
     protected $with = ['evento', 'pessoa'];
 
-    public function setor()
+    public function evento()
     {
         return $this->belongsTo(Evento::class);
     }

@@ -37,7 +37,7 @@ class Evento extends Model
      *
      * @var array
      */
-    protected $with = ['setor'];
+    protected $with = ['setor', 'pessoas'];
 
     public function setor()
     {
@@ -46,6 +46,6 @@ class Evento extends Model
 
      public function pessoas()
     {
-        return $this->hasMany(Pessoa::class);
+        return $this->belongsToMany(Pessoa::class, 'eventos_pessoas', 'evento_id', 'pessoa_id')->withPivot('id', 'presente')->orderBy('nome');
     }
 }
