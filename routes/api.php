@@ -75,6 +75,7 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::get('inicio-acessos-mes', [InicioController::class, 'acessosMes']);
     Route::get('inicio-acessos-por-dia', [InicioController::class, 'acessosPorDia']);
     Route::get('inicio-acessos-por-setor', [InicioController::class, 'acessosPorSetor']);
+    Route::get('inicio-proximos-eventos', [InicioController::class, 'proximosEventos']);
 
     Route::post('upload-foto', [PessoasController::class, 'uploadFoto']);
     Route::post('upload-foto2', [PessoasController::class, 'uploadFoto2']);

@@ -172,6 +172,7 @@ class PessoasController extends Controller
         $data->mae = $request->mae; 
         $data->pai = $request->pai; 
         $data->obs = $request->obs; 
+        $data->foto = $request->foto; 
         $data->key = bcrypt($request->cpf); 
 
          $data->cep = $request->cep;

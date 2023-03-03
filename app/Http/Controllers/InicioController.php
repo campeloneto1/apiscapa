@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Acesso;
+use App\Models\Evento;
 use Carbon\Carbon;
 use DB;
 
@@ -43,8 +44,8 @@ class InicioController extends Controller
    }
 
     public function acessosPorSetor(){
-     $now = Carbon::now();
-      $user = Auth::user();
+        $now = Carbon::now();
+        $user = Auth::user();
         if($user->perfil->administrador){
             return Acesso::query()
              ->join('setores', 'setores.id', '=', 'acessos.setor_id')
@@ -52,6 +53,7 @@ class InicioController extends Controller
              ->whereDate('acessos.data_hora', Carbon::now())
              ->groupBy('setores.nome')
              ->orderBy(DB::raw('count(acessos.id)'), 'DESC')
+             ->orderBy('setores.nome', 'ASC')
              ->get();   
         }else{ 
           return Acesso::query()
@@ -61,12 +63,30 @@ class InicioController extends Controller
              ->where('setores.orgao_id', $user->orgao_id)
              ->groupBy('setores.nome')
              ->orderBy(DB::raw('count(acessos.id)'), 'DESC')
+             ->orderBy('setores.nome', 'ASC')
              ->get();   
           //return Acesso::whereYear('data_hora', $now->year)->whereMonth('data_hora', $now->month)->whereRelation('setor','orgao_id', $user->orgao_id)->count();
         }    
+   }
+
+    public function proximosEventos(){
+
+        $hj = Carbon::now();
+        //return $hj->addDays(2);
+        $user = Auth::user();
+        if($user->perfil->administrador){
+            return Evento::whereDate('data_hora', '>', $hj->subDays(1))
+            ->whereDate('data_hora', '<=', $hj->addDays(2))
+            ->orderBy('data_hora')
+            ->get();
+        }else{ 
+            return Evento::whereDate('data_hora', '>', $hj->subDays(1))
+            ->whereDate('data_hora', '<=', $hj->addDays(2))
+            ->whereRelation('setor', 'orgao_id', $user->orgao_id)
+            ->orderBy('data_hora')
+            ->get();
+        }  
         
-              
-           
    }
 
 }
