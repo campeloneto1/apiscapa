@@ -8,7 +8,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Pessoa;
+use App\Models\Evento;
+use App\Models\EventoPessoa;
 use App\Models\Log;
+use Carbon\Carbon;
 
 class PessoasController extends Controller
 {
@@ -34,6 +37,20 @@ class PessoasController extends Controller
     {
        //return Pessoa::orderBy('nome')->get();    
         return Pessoa::where('cpf', $request->id)->get();        
+    }
+
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function whereEvento($id)
+    {
+       //return Pessoa::orderBy('nome')->get();    
+        return Evento::whereDate('data_hora',  Carbon::now())->whereRelation('pessoas', 'pessoa_id', $id)->without('pessoas')->get();
+        //return EventoPessoa::where('pessoa_id', $id)->whereHas('evento', function ($query) {
+                //$query->whereDate('data_hora',  Carbon::now());
+             //})->evento()->get();        
     }
 
     /**

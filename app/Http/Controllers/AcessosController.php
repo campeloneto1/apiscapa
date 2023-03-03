@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\Acesso;
+use App\Models\EventoPessoa;
 use App\Models\Log;
 
 class AcessosController extends Controller
@@ -62,6 +63,16 @@ class AcessosController extends Controller
         $data->created_by = Auth::id();      
 
         if($data->save()){
+
+            $evento = EventoPessoa::where('pessoa_id', $request->pessoa_id)->where('presente', 0)->whereHas('evento', function ($query) {
+                $query->whereDate('data_hora',  Carbon::now());
+             })->get();
+            if(count($evento) > 0){
+                $eventopessoa = EventoPessoa::find($evento[0]->id);
+                $eventopessoa->presente = 1;
+                $eventopessoa->save();
+            }
+
             $log = new Log;
             $log->user_id = Auth::id();
             $log->mensagem = 'Cadastrou um Acesso';
