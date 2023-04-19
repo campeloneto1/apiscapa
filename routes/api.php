@@ -67,6 +67,7 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::get('orgaos/{id}/setores', [OrgaosController::class, 'whereSetores']);
     Route::get('paises/{id}/estados', [PaisesController::class, 'where']);
     Route::get('pessoas/{id}/checkcpf',  [PessoasController::class, 'checkCpf']);
+      Route::get('pessoas/{id}/searchcpf',  [PessoasController::class, 'searchCpf']);
     Route::get('pessoas/{id}/evento',  [PessoasController::class, 'whereEvento']);
     Route::get('users/{id}/resetpass', [UsersController::class, 'resetPass']);
     Route::post('users-changpass',  [UsersController::class, 'changPass']);

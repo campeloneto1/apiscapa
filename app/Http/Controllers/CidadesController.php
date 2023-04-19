@@ -160,7 +160,7 @@ class CidadesController extends Controller
             $log->fk = $data->id;
             $log->object = $data;
             $log->save();
-            return response()->json('Cidade escluída com sucesso!', 200);
+            return response()->json('Cidade excluída com sucesso!', 200);
           }else{
             $erro = "Não foi possivel realizar a exclusão!";
             $cod = 171;

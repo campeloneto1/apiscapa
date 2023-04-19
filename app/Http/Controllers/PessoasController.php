@@ -39,6 +39,17 @@ class PessoasController extends Controller
         return Pessoa::where('cpf', $request->id)->get();        
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function searchCpf(Request $request)
+    {        
+       //return Pessoa::orderBy('nome')->get();    
+        return Pessoa::where('cpf', 'like', '%'.$request->id.'%')->orWhere('nome', 'like', '%'.$request->id.'%')->get();        
+    }
+
      /**
      * Display a listing of the resource.
      *
@@ -112,7 +123,12 @@ class PessoasController extends Controller
             $log->fk = $data->id;
             $log->object = $data;
             $log->save();
-            return response()->json('Informação cadastrada com sucesso!', 200);
+            $resposta = [
+                'mensagem' => 'Informação cadastrada com sucesso!', 
+                'id' => $data->id,
+                'cpf' => $data->cpf
+            ];
+            return response()->json($resposta, 200);
         }else{
              $erro = "Não foi possivel realizar o cadastro!";
             $cod = 171;
@@ -194,7 +210,13 @@ class PessoasController extends Controller
             $log->object = $data;
             $log->object_old = $dataold;
             $log->save();
-            return response()->json('Informação editada com sucesso!', 200);
+            $resposta = [
+                'mensagem' => 'Informação editada com sucesso!', 
+                'id' => $data->id,
+                'cpf' => $data->cpf
+            ];
+            return response()->json($resposta, 200);
+            //return response()->json('Informação editada com sucesso!', 200);
         }else{
            $erro = "Não foi possivel realizar a edição!";
             $cod = 171;
@@ -254,7 +276,7 @@ class PessoasController extends Controller
       
     }
 
-/**
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id

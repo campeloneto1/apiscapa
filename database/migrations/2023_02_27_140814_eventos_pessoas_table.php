@@ -17,8 +17,8 @@ return new class extends Migration
         Schema::create('eventos_pessoas', function (Blueprint $table) {
             $table->id();
             
-            $table->foreignId('evento_id')->nullable()->constrained('eventos')->onUpdate('cascade')->onDelete('set null');
-            $table->foreignId('pessoa_id')->nullable()->constrained('pessoas')->onUpdate('cascade')->onDelete('set null');  
+            $table->foreignId('evento_id')->nullable()->constrained('eventos')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('pessoa_id')->nullable()->constrained('pessoas')->onUpdate('cascade')->onDelete('cascade');  
             $table->boolean('presente')->default(0);
             $table->string('obs', 150)->nullable();
 
