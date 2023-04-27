@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Acesso extends Model
+class Funcionario extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class Acesso extends Model
      *
      * @var string
      */
-    protected $table = 'acessos';
+    protected $table = 'funcionarios';
 
     /**
      * The attributes that are mass assignable.
@@ -37,32 +37,11 @@ class Acesso extends Model
      *
      * @var array
      */
-    protected $with = ['pessoa', 'setor', 'funcionario', 'posto', 'createdby'];
-
-    public function pessoa()
-    {
-        return $this->belongsTo(Pessoa::class);
-    }
+    protected $with = ['setor'];
 
     public function setor()
     {
         return $this->belongsTo(Setor::class);
     }
 
-    public function funcionario()
-    {
-        return $this->belongsTo(Funcionario::class);
-    }
-
-    public function posto()
-    {
-        return $this->belongsTo(Posto::class);
-    }
-
-    public function createdby()
-    {
-        return $this->belongsTo(User::class, 'created_by')->without('perfil');
-    }
-
-    
 }

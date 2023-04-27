@@ -31,16 +31,7 @@ class AcessosController extends Controller
        
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -56,6 +47,7 @@ class AcessosController extends Controller
    
         $data->posto_id = $request->posto_id;   
         $data->setor_id = $request->setor_id;   
+        $data->funcionario_id = $request->funcionario_id;  
         $data->pessoa_id = $request->pessoa_id;  
         $data->obs = $request->obs;   
         $data->data_hora = Carbon::now();   
@@ -102,17 +94,6 @@ class AcessosController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -129,6 +110,7 @@ class AcessosController extends Controller
 
         $data->posto_id = $request->posto_id;   
         $data->setor_id = $request->setor_id;   
+        $data->funcionario_id = $request->funcionario_id; 
         $data->pessoa_id = $request->pessoa_id;  
         $data->obs = $request->obs;   
         $data->updated_by = Auth::id();      

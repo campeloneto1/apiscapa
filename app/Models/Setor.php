@@ -43,4 +43,9 @@ class Setor extends Model
     {
         return $this->belongsTo(Orgao::class);
     }
+
+    public function funcionarios()
+    {
+        return $this->hasMany(Funcionario::class, 'setor_id');
+    }
 }

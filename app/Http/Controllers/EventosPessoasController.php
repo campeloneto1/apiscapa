@@ -91,7 +91,7 @@ class EventosPessoasController extends Controller
             
                 $log = new Log;
                 $log->user_id = Auth::id();
-                $log->mensagem = "Cadastrou uma Pessoa no Evento".$value['id'];
+                $log->mensagem = "Cadastrou uma Pessoa no Evento p ".$value['id']." e ".$request->evento;
                 $log->table = 'eventos_pessoas';
                 $log->action = 1;
                 $log->fk = $data->id;
@@ -100,7 +100,7 @@ class EventosPessoasController extends Controller
             }    
         } catch (Throwable $e) {
             DB::rollback();
-             $erro = "Não foi possivel realizar o cadastro! 2";
+             $erro = "Não foi possivel realizar o cadastro!";
             $cod = 171;
             $resposta = ['erro' => $erro, 'cod' => $cod];
             return response()->json($resposta, 404);

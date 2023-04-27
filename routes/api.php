@@ -9,7 +9,7 @@ use App\Http\Controllers\CidadesController;
 use App\Http\Controllers\EstadosController;
 use App\Http\Controllers\EventosController;
 use App\Http\Controllers\EventosPessoasController;
-
+use App\Http\Controllers\FuncionarioController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\NiveisController;
@@ -48,6 +48,7 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::apiResource('estados', EstadosController::class);
     Route::apiResource('eventos', EventosController::class);
     Route::apiResource('eventos-pessoas', EventosPessoasController::class);
+    Route::apiResource('funcionarios', FuncionarioController::class);
     Route::apiResource('logs', LogsController::class);
     Route::apiResource('niveis', NiveisController::class);
     Route::apiResource('niveis-postos', NiveisPostosController::class);
@@ -69,6 +70,7 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::get('pessoas/{id}/checkcpf',  [PessoasController::class, 'checkCpf']);
       Route::get('pessoas/{id}/searchcpf',  [PessoasController::class, 'searchCpf']);
     Route::get('pessoas/{id}/evento',  [PessoasController::class, 'whereEvento']);
+    Route::get('setores/{id}/funcionarios', [SetoresController::class, 'where']);
     Route::get('users/{id}/resetpass', [UsersController::class, 'resetPass']);
     Route::post('users-changpass',  [UsersController::class, 'changPass']);
 

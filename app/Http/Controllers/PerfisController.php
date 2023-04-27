@@ -63,6 +63,11 @@ class PerfisController extends Controller
         $data->eventos_edt = $request->eventos_edt;         
         $data->eventos_del = $request->eventos_del; 
 
+        $data->funcionarios = $request->funcionarios; 
+        $data->funcionarios_cad = $request->funcionarios_cad; 
+        $data->funcionarios_edt = $request->funcionarios_edt;         
+        $data->funcionarios_del = $request->funcionarios_del; 
+
         $data->pessoas = $request->pessoas; 
         $data->pessoas_cad = $request->pessoas_cad; 
         $data->pessoas_edt = $request->pessoas_edt;         
@@ -159,6 +164,11 @@ class PerfisController extends Controller
         $data->eventos_cad = $request->eventos_cad; 
         $data->eventos_edt = $request->eventos_edt;         
         $data->eventos_del = $request->eventos_del; 
+
+        $data->funcionarios = $request->funcionarios; 
+        $data->funcionarios_cad = $request->funcionarios_cad; 
+        $data->funcionarios_edt = $request->funcionarios_edt;         
+        $data->funcionarios_del = $request->funcionarios_del; 
 
         $data->pessoas = $request->pessoas; 
         $data->pessoas_cad = $request->pessoas_cad; 
