@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AcessosController;
 use App\Http\Controllers\CidadesController;
+use App\Http\Controllers\ChaveController;
 use App\Http\Controllers\EstadosController;
 use App\Http\Controllers\EventosController;
 use App\Http\Controllers\EventosPessoasController;
@@ -45,6 +46,7 @@ Route::group(['middleware' => ['auth:api']], function() {
 
     Route::apiResource('acessos', AcessosController::class);
     Route::apiResource('cidades', CidadesController::class);
+    Route::apiResource('chaves', ChaveController::class);
     Route::apiResource('estados', EstadosController::class);
     Route::apiResource('eventos', EventosController::class);
     Route::apiResource('eventos-pessoas', EventosPessoasController::class);
@@ -61,6 +63,7 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::apiResource('sexos', SexosController::class);
     Route::apiResource('users', UsersController::class);
 
+    Route::put('chaves/{chafe}/receber',  [ChaveController::class, 'receber']);
     Route::get('eventos-pessoas/{id}/presente', [EventosPessoasController::class, 'presente']);
     Route::get('estados/{id}/cidades', [EstadosController::class, 'where']);
     Route::get('orgaos/{id}/niveis', [OrgaosController::class, 'whereNiveis']);
@@ -68,7 +71,7 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::get('orgaos/{id}/setores', [OrgaosController::class, 'whereSetores']);
     Route::get('paises/{id}/estados', [PaisesController::class, 'where']);
     Route::get('pessoas/{id}/checkcpf',  [PessoasController::class, 'checkCpf']);
-      Route::get('pessoas/{id}/searchcpf',  [PessoasController::class, 'searchCpf']);
+    Route::get('pessoas/{id}/searchcpf',  [PessoasController::class, 'searchCpf']);
     Route::get('pessoas/{id}/evento',  [PessoasController::class, 'whereEvento']);
     Route::get('setores/{id}/funcionarios', [SetoresController::class, 'where']);
     Route::get('users/{id}/resetpass', [UsersController::class, 'resetPass']);
@@ -77,6 +80,7 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::get('inicio-acessos-dia', [InicioController::class, 'acessosDia']);
     Route::get('inicio-acessos-mes', [InicioController::class, 'acessosMes']);
     Route::get('inicio-acessos-por-dia', [InicioController::class, 'acessosPorDia']);
+    Route::get('inicio-acessos-por-mes', [InicioController::class, 'acessosPorMes']);
     Route::get('inicio-acessos-por-setor', [InicioController::class, 'acessosPorSetor']);
     Route::get('inicio-proximos-eventos', [InicioController::class, 'proximosEventos']);
 

@@ -14,13 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::disableForeignKeyConstraints();
-        Schema::create('setores', function (Blueprint $table) {
+        Schema::create('chaves', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('orgao_id')->nullable()->constrained('orgaos')->onUpdate('cascade')->onDelete('set null');
-            $table->string('nome', 100);    
-            $table->string('email', 40)->unique()->nullable();
-            $table->string('telefone1', 11)->nullable();
-            $table->string('telefone2', 12)->nullable();
+            
+            $table->foreignId('setor_id')->nullable()->constrained('setores')->onUpdate('cascade')->onDelete('set null');
+            $table->foreignId('funcionario_entrega_id')->nullable()->constrained('funcionarios')->onUpdate('cascade')->onDelete('set null');
+            $table->dateTime('data_hora_entrega', $precision = 0);
+            $table->foreignId('funcionario_devolucao_id')->nullable()->constrained('funcionarios')->onUpdate('cascade')->onDelete('set null');
+            $table->dateTime('data_hora_devolucao', $precision = 0)->nullable();
+            $table->string('obs', 150)->nullable();
 
             $table->foreignId('created_by')->nullable()->constrained('users')->onUpdate('cascade')->onDelete('set null');
             $table->foreignId('updated_by')->nullable()->constrained('users')->onUpdate('cascade')->onDelete('set null');
@@ -36,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('setores');
+        Schema::dropIfExists('chaves');
     }
 };

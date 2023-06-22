@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Funcionario extends Model
+class Chave extends Model
 {
     use HasFactory;
 
-     /**
+    /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'funcionarios';
+    protected $table = 'chaves';
 
     /**
      * The attributes that are mass assignable.
@@ -37,11 +37,21 @@ class Funcionario extends Model
      *
      * @var array
      */
-    protected $with = ['setor'];
+    protected $with = ['setor', 'funcionario_entrega', 'funcionario_devolucao'];
 
+    
     public function setor()
     {
         return $this->belongsTo(Setor::class);
     }
 
+    public function funcionario_entrega()
+    {
+        return $this->belongsTo(Funcionario::class, 'funcionario_entrega_id');
+    }
+
+    public function funcionario_devolucao()
+    {
+        return $this->belongsTo(Funcionario::class, 'funcionario_devolucao_id');
+    }
 }

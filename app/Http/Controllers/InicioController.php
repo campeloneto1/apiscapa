@@ -43,6 +43,14 @@ class InicioController extends Controller
         ->get();
    }
 
+   public function acessosPorMes(){
+        $now = Carbon::now();
+        return Acesso::select(DB::raw('month(data_hora) as mes'), DB::raw('count(id) as quant'))
+        ->whereYear('data_hora', $now->year)
+        ->groupBy(DB::raw('month(data_hora)'))
+        ->get();
+   }
+
     public function acessosPorSetor(){
         $now = Carbon::now();
         $user = Auth::user();

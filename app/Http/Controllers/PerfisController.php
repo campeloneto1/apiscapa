@@ -27,16 +27,6 @@ class PerfisController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -57,6 +47,11 @@ class PerfisController extends Controller
         $data->acessos_cad = $request->acessos_cad; 
         $data->acessos_edt = $request->acessos_edt;         
         $data->acessos_del = $request->acessos_del; 
+
+        $data->chaves = $request->chaves; 
+        $data->chaves_cad = $request->chaves_cad; 
+        $data->chaves_edt = $request->chaves_edt;         
+        $data->chaves_del = $request->chaves_del; 
 
         $data->eventos = $request->eventos; 
         $data->eventos_cad = $request->eventos_cad; 
@@ -125,17 +120,6 @@ class PerfisController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -159,6 +143,11 @@ class PerfisController extends Controller
         $data->acessos_cad = $request->acessos_cad; 
         $data->acessos_edt = $request->acessos_edt;         
         $data->acessos_del = $request->acessos_del; 
+
+        $data->chaves = $request->chaves; 
+        $data->chaves_cad = $request->chaves_cad; 
+        $data->chaves_edt = $request->chaves_edt;         
+        $data->chaves_del = $request->chaves_del; 
 
         $data->eventos = $request->eventos; 
         $data->eventos_cad = $request->eventos_cad; 
