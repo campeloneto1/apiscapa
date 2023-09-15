@@ -24,7 +24,7 @@ class PessoasController extends Controller
     {
        //return Pessoa::orderBy('nome')->get();
        
-             return Pessoa::orderBy('nome')->get();
+             return Pessoa::orderBy('nome')->whereNull('nao_autorizado')->get();
         
     }
 
@@ -62,6 +62,24 @@ class PessoasController extends Controller
         //return EventoPessoa::where('pessoa_id', $id)->whereHas('evento', function ($query) {
                 //$query->whereDate('data_hora',  Carbon::now());
              //})->evento()->get();        
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function searchPessoa($id)
+    {
+        return Pessoa::where('cpf', 'like', '%'.$id.'%')
+        ->orWhere('nome', 'like', '%'.$id.'%')
+        ->orWhere('rg', 'like', '%'.$id.'%')
+        ->orWhere('telefone1', 'like', '%'.$id.'%')
+        ->orWhere('telefone2', 'like', '%'.$id.'%')
+        ->orWhere('email', 'like', '%'.$id.'%')
+        ->orWhere('mae', 'like', '%'.$id.'%')
+        ->orWhere('pai', 'like', '%'.$id.'%')
+        ->get();        
     }
 
 
@@ -235,6 +253,83 @@ class PessoasController extends Controller
             $resposta = ['erro' => $erro, 'cod' => $cod];
             return response()->json($resposta, 404);
           }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  Pessoa  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function altAcesso(Pessoa $id)
+    {
+
+        $dataold = $id;
+        $id->nao_autorizado = !$id->nao_autorizado;
+
+        if($id->save()){
+            $log = new Log;
+            $log->user_id = Auth::id();
+            $log->mensagem = 'Editou a permissao de acesso de uma Pessoa';
+            $log->table = 'pessoas';
+            $log->action = 2;
+            $log->fk = $id->id;
+            $log->object = $id;
+            $log->object_old = $dataold;
+            $log->save();
+            $resposta = [
+                'mensagem' => 'Informação editada com sucesso!', 
+                'id' => $id->id,
+                'cpf' => $id->cpf
+            ];
+            return response()->json($resposta, 200);
+            //return response()->json('Informação editada com sucesso!', 200);
+        }else{
+           $erro = "Não foi possivel realizar a edição!";
+            $cod = 171;
+            $resposta = ['erro' => $erro, 'cod' => $cod];
+            return response()->json($resposta, 404);
+        }
+      
+    }
+
+     /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateFoto(Request $request)
+    {
+        $pessoa = Pessoa::findOrFail($request->id);
+        $dataold = $pessoa;
+        
+        $pessoa->foto = $request->foto;
+
+        if($pessoa->save()){
+            $log = new Log;
+            $log->user_id = Auth::id();
+            $log->mensagem = 'Editou a foto de uma Pessoa';
+            $log->table = 'pessoas';
+            $log->action = 2;
+            $log->fk = $pessoa->id;
+            $log->object = $pessoa;
+            $log->object_old = $dataold;
+            $log->save();
+            $resposta = [
+                'mensagem' => 'Informação editada com sucesso!', 
+                'id' => $pessoa->id,
+                'cpf' => $pessoa->cpf
+            ];
+            return response()->json($resposta, 200);
+            //return response()->json('Informação editada com sucesso!', 200);
+        }else{
+           $erro = "Não foi possivel realizar a edição!";
+            $cod = 171;
+            $resposta = ['erro' => $erro, 'cod' => $cod];
+            return response()->json($resposta, 404);
+        }
+      
     }
 
     /**

@@ -91,7 +91,7 @@ class FuncionarioController extends Controller
 
         $dataold = $funcionario;
 
-        $funcionario->orgao_id = $request->orgao_id;   
+        $funcionario->setor_id = $request->setor_id;   
         $funcionario->nome = $request->nome;   
         $funcionario->ramal1 = $request->ramal1;   
         $funcionario->ramal2 = $request->ramal2;   

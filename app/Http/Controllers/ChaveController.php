@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Chave;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use App\Models\Chave;
 use App\Models\Log;
+use DB;
+
 
 class ChaveController extends Controller
 {
@@ -21,9 +24,21 @@ class ChaveController extends Controller
         //return Chave::orderBy('nome')->get();
         $user = Auth::user();
         if($user->perfil->administrador){
-             return Chave::whereNull('data_hora_devolucao')->orderBy('id', 'desc')->get();
+             return Chave::whereNull('data_hora_devolucao')
+             ->orWhere(function (Builder $query) {
+                $query->whereDate('data_hora_entrega', Carbon::now());
+              })
+             ->orderBy('id', 'desc')->get();
         }else{ 
-            return Chave::whereRelation('setor','orgao_id', $user->orgao_id)->orderBy('id', 'desc')->get();
+            return Chave::where(function (Builder $query)  use ($user){
+                $query->whereRelation('setor','orgao_id', $user->orgao_id)
+                    ->whereDate('data_hora_entrega', Carbon::now());
+              })
+            ->orWhere(function (Builder $query) use ($user){
+                $query->whereRelation('setor','orgao_id', $user->orgao_id)
+                    ->whereNUll('data_hora_devolucao');
+              })
+            ->orderBy('id', 'desc')->get();
         } 
     }
 
@@ -38,6 +53,57 @@ class ChaveController extends Controller
         if(!Auth::user()->perfil->chaves_cad){
             return response()->json('Não Autorizado', 401);
         }
+        $user = Auth::user();
+
+        try {
+            DB::beginTransaction();
+            foreach ($request->setor_id as $key => $value) {
+                $chave = Chave::where('setor_id', $value)->whereRelation('setor','orgao_id', $user->orgao_id)->whereNull('data_hora_devolucao')->get();
+
+                if(empty($chave[0])){
+                     $data = new Chave;
+
+                    $data->setor_id = $value;     
+                    $data->funcionario_entrega_id = $request->funcionario_entrega_id;   
+                    $data->data_hora_entrega = Carbon::now(); 
+                    $data->obs = $request->obs;   
+
+                    $data->created_by = Auth::id();      
+                    $data->save();
+                
+                    $log = new Log;
+                    $log->user_id = Auth::id();
+                    $log->mensagem = 'Cadastrou uma entrega de Chave';
+                    $log->table = 'chaves';
+                    $log->action = 1;
+                    $log->fk = $data->id;
+                    $log->object = $data;
+                    $log->save();
+                }
+
+            }    
+        } catch (Throwable $e) {
+            DB::rollback();
+             $erro = "Não foi possivel realizar o cadastro!";
+            $cod = 171;
+            $resposta = ['erro' => $erro, 'cod' => $cod];
+            return response()->json($resposta, 404);
+        }
+        DB::commit();
+        return response()->json('Pessoa cadastrada com sucesso!', 200);
+
+
+
+       /*
+        $chave = Chave::where('setor_id', $request->setor_id)->whereRelation('setor','orgao_id', $user->orgao_id)->whereNull('data_hora_devolucao')->get();
+
+        if(!empty($chave[0])){
+            $erro = "Chave já foi emprestada!";
+            $cod = 171;
+            $resposta = ['erro' => $erro, 'cod' => $cod];
+            return response()->json($resposta, 404);
+        }
+
         $data = new Chave;
 
         $data->setor_id = $request->setor_id;     
@@ -62,7 +128,7 @@ class ChaveController extends Controller
             $cod = 171;
             $resposta = ['erro' => $erro, 'cod' => $cod];
             return response()->json($resposta, 404);
-        }
+        }*/
     }
 
     /**

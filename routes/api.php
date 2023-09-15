@@ -5,12 +5,17 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AcessosController;
+use App\Http\Controllers\AutoridadeController;
+use App\Http\Controllers\AutoridadeAcessoController;
+use App\Http\Controllers\C1Controller;
+use App\Http\Controllers\CargoController;
 use App\Http\Controllers\CidadesController;
 use App\Http\Controllers\ChaveController;
 use App\Http\Controllers\EstadosController;
 use App\Http\Controllers\EventosController;
 use App\Http\Controllers\EventosPessoasController;
 use App\Http\Controllers\FuncionarioController;
+use App\Http\Controllers\GraduacaoController;
 use App\Http\Controllers\InicioController;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\NiveisController;
@@ -45,12 +50,17 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::get('/check', [AuthController::class, 'check']); 
 
     Route::apiResource('acessos', AcessosController::class);
+    Route::apiResource('autoridades', AutoridadeController::class);
+    Route::apiResource('autoridades-acessos', AutoridadeAcessoController::class);
+    Route::apiResource('c1', C1Controller::class);
+    Route::apiResource('cargos', CargoController::class);
     Route::apiResource('cidades', CidadesController::class);
     Route::apiResource('chaves', ChaveController::class);
     Route::apiResource('estados', EstadosController::class);
     Route::apiResource('eventos', EventosController::class);
     Route::apiResource('eventos-pessoas', EventosPessoasController::class);
     Route::apiResource('funcionarios', FuncionarioController::class);
+    Route::apiResource('graduacoes', GraduacaoController::class);
     Route::apiResource('logs', LogsController::class);
     Route::apiResource('niveis', NiveisController::class);
     Route::apiResource('niveis-postos', NiveisPostosController::class);
@@ -72,7 +82,10 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::get('paises/{id}/estados', [PaisesController::class, 'where']);
     Route::get('pessoas/{id}/checkcpf',  [PessoasController::class, 'checkCpf']);
     Route::get('pessoas/{id}/searchcpf',  [PessoasController::class, 'searchCpf']);
+    Route::get('pessoas/{id}/search',  [PessoasController::class, 'searchPessoa']);
     Route::get('pessoas/{id}/evento',  [PessoasController::class, 'whereEvento']);
+    Route::patch('pessoas/{id}/altacesso',  [PessoasController::class, 'altAcesso']);
+    Route::patch('autoridades-acessos/{id}/saida',  [AutoridadeAcessoController::class, 'saida']);
     Route::get('setores/{id}/funcionarios', [SetoresController::class, 'where']);
     Route::get('users/{id}/resetpass', [UsersController::class, 'resetPass']);
     Route::post('users-changpass',  [UsersController::class, 'changPass']);
@@ -87,7 +100,10 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::post('upload-foto', [PessoasController::class, 'uploadFoto']);
     Route::post('upload-foto2', [PessoasController::class, 'uploadFoto2']);
 
+    Route::post('update-foto', [PessoasController::class, 'updateFoto']);
+
     Route::post('rel-acessos', [RelatoriosController::class, 'relAcessos']);
+    Route::post('rel-autoridades-acessos', [RelatoriosController::class, 'relAutoridadesAcessos']);
 
     //Route::get('estados2', [EstadosController::class, 'index2']);
 });

@@ -72,7 +72,7 @@ class EventosPessoasController extends Controller
                  $data = new EventoPessoa;
 
                 $data->evento_id = $request->evento;     
-                $data->pessoa_id = $value['id'];   
+                $data->pessoa_id = $value;   
                 $data->presente = 0;   
                 //$data->obs = $request->obs;   
 
@@ -81,7 +81,7 @@ class EventosPessoasController extends Controller
             
                 $log = new Log;
                 $log->user_id = Auth::id();
-                $log->mensagem = "Cadastrou uma Pessoa no Evento p ".$value['id']." e ".$request->evento;
+                $log->mensagem = "Cadastrou uma Pessoa no Evento p ".$value." e ".$request->evento;
                 $log->table = 'eventos_pessoas';
                 $log->action = 1;
                 $log->fk = $data->id;

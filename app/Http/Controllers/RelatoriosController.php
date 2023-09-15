@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\Acesso;
+use App\Models\AutoridadeAcesso;
 use App\Models\Log;
 
 class RelatoriosController extends Controller
@@ -26,6 +27,15 @@ class RelatoriosController extends Controller
         }
 
         return $data->orderBy('data_hora')->get();
+    }
+
+    public function relAutoridadesAcessos(Request $request){
+
+        $data = AutoridadeAcesso::where('data_hora_entrada', '>=', $request->data_hora_inicio)
+        ->where('data_hora_entrada', '<=', $request->data_hora_fim)
+        ->where('orgao_id', $request->orgao_id);    
+
+        return $data->orderBy('data_hora_entrada')->get();
     }
 
 }

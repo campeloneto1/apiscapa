@@ -48,6 +48,16 @@ class PerfisController extends Controller
         $data->acessos_edt = $request->acessos_edt;         
         $data->acessos_del = $request->acessos_del; 
 
+        $data->autoridades_acessos = $request->autoridades_acessos; 
+        $data->autoridades_acessos_cad = $request->autoridades_acessos_cad; 
+        $data->autoridades_acessos_edt = $request->autoridades_acessos_edt;         
+        $data->autoridades_acessos_del = $request->autoridades_acessos_del; 
+
+        $data->c1 = $request->c1; 
+        $data->c1_cad = $request->c1_cad; 
+        $data->c1_edt = $request->c1_edt;         
+        $data->c1_del = $request->c1_del; 
+
         $data->chaves = $request->chaves; 
         $data->chaves_cad = $request->chaves_cad; 
         $data->chaves_edt = $request->chaves_edt;         
@@ -143,6 +153,16 @@ class PerfisController extends Controller
         $data->acessos_cad = $request->acessos_cad; 
         $data->acessos_edt = $request->acessos_edt;         
         $data->acessos_del = $request->acessos_del; 
+
+        $data->autoridades_acessos = $request->autoridades_acessos; 
+        $data->autoridades_acessos_cad = $request->autoridades_acessos_cad; 
+        $data->autoridades_acessos_edt = $request->autoridades_acessos_edt;         
+        $data->autoridades_acessos_del = $request->autoridades_acessos_del; 
+
+        $data->c1 = $request->c1; 
+        $data->c1_cad = $request->c1_cad; 
+        $data->c1_edt = $request->c1_edt;         
+        $data->c1_del = $request->c1_del; 
 
         $data->chaves = $request->chaves; 
         $data->chaves_cad = $request->chaves_cad; 
