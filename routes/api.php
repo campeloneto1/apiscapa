@@ -102,6 +102,8 @@ Route::group(['middleware' => ['auth:api']], function() {
 
     Route::post('update-foto', [PessoasController::class, 'updateFoto']);
 
+    Route::post('importar', [PessoasController::class, 'importar']);
+
     Route::post('rel-acessos', [RelatoriosController::class, 'relAcessos']);
     Route::post('rel-autoridades-acessos', [RelatoriosController::class, 'relAutoridadesAcessos']);
 

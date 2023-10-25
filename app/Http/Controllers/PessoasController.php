@@ -112,6 +112,8 @@ class PessoasController extends Controller
         $data->pai = $request->pai; 
         $data->obs = $request->obs; 
         $data->foto = $request->foto; 
+
+        $data->face_matcher = $request->face_matcher; 
         $data->key = bcrypt($request->cpf); 
 
          $data->cep = $request->cep;
@@ -188,6 +190,7 @@ class PessoasController extends Controller
         $data->pai = $request->pai; 
         $data->obs = $request->obs; 
         $data->foto = $request->foto; 
+        $data->face_matcher = $request->face_matcher; 
         $data->key = bcrypt($request->cpf); 
 
          $data->cep = $request->cep;
@@ -305,11 +308,51 @@ class PessoasController extends Controller
         $dataold = $pessoa;
         
         $pessoa->foto = $request->foto;
+        $pessoa->face_matcher = $request->face_matcher;
 
         if($pessoa->save()){
             $log = new Log;
             $log->user_id = Auth::id();
             $log->mensagem = 'Editou a foto de uma Pessoa';
+            $log->table = 'pessoas';
+            $log->action = 2;
+            $log->fk = $pessoa->id;
+            $log->object = $pessoa;
+            $log->object_old = $dataold;
+            $log->save();
+            $resposta = [
+                'mensagem' => 'Informação editada com sucesso!', 
+                'id' => $pessoa->id,
+                'cpf' => $pessoa->cpf
+            ];
+            return response()->json($resposta, 200);
+            //return response()->json('Informação editada com sucesso!', 200);
+        }else{
+           $erro = "Não foi possivel realizar a edição!";
+            $cod = 171;
+            $resposta = ['erro' => $erro, 'cod' => $cod];
+            return response()->json($resposta, 404);
+        }
+      
+    }
+
+     /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateFaceMatcher(Request $request)
+    {
+        $pessoa = Pessoa::findOrFail($request->id);
+        $dataold = $pessoa;
+        
+        $pessoa->face_matcher = $request->face_matcher;
+
+        if($pessoa->save()){
+            $log = new Log;
+            $log->user_id = Auth::id();
+            $log->mensagem = 'Atualizou o facematcher de uma Pessoa';
             $log->table = 'pessoas';
             $log->action = 2;
             $log->fk = $pessoa->id;
@@ -376,7 +419,7 @@ class PessoasController extends Controller
             $file->move(storage_path().'/app/public/', $picture);
 
             $data = Pessoa::find($request->id);
-            $dataold = Pessoa::find($request->id);
+            $dataold = $data;
             $data->foto =  $picture;
 
             if($data->save()){
@@ -405,4 +448,73 @@ class PessoasController extends Controller
   
         
     }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  Pessoa  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function importar(Request $request)
+    {
+        //->whereNull('nao_autorizado')
+        $data = $request;
+        $data2 = [];
+        
+         foreach($data->dados as $key => $value){
+            $obs = "";
+
+            if(strlen($value['CPF']) == 11){
+                $pessoa = Pessoa::firstOrCreate(
+                     ['cpf' => $value['CPF']],
+                     ['nome' => $value['NOME'], 'key' => bcrypt($value['CPF'])]
+                 );
+                
+                if($pessoa->wasRecentlyCreated){
+                    if($data->evento_id){
+                        $evento = EventoPessoa::firstOrCreate(
+                            ['evento_id' => $data->evento_id, 'pessoa_id' => $pessoa->id],
+                        );                    
+                        if($evento->wasRecentlyCreated){
+                            $obs = "Adicionada ao evento.";
+                        }else{
+                            $obs = "Já estava adicionada ao evento.";                           
+                        }
+                        
+                    }else{
+                        $obs = "";
+                    }
+                    array_push($data2, (object) array('NOME' => $value['NOME'],'CPF' => $value['CPF'], 'importado' => true, 'obs' => $obs));
+                }else{
+                    if($pessoa->cpf){
+                        if($data->evento_id){
+                            if($pessoa->nao_autorizado){
+                                $obs = "Já estava cadastrada, não adicionada ao evento, pois a entrada está proibída.";
+                            }else{
+                                $evento = EventoPessoa::firstOrCreate(
+                                    ['evento_id' => $data->evento_id, 'pessoa_id' => $pessoa->id],
+                                );  
+                                if($evento->wasRecentlyCreated){
+                                    $obs = "Já estava cadastrada, foi adicionada ao evento.";
+                                }else{
+                                    $obs = "Já estava cadastrada, já estava adicionada ao evento."; 
+                                } 
+                            }
+                        }else{
+                            $obs = "Já estava cadastrada."; 
+                        }  
+                        array_push($data2, (object) array('NOME' => $value['NOME'],'CPF' => $value['CPF'], 'importado' => false, 'obs' => $obs));                                                         
+                    }                                             
+                }
+            }else{
+                array_push($data2, (object) array('NOME' => $value['NOME'],'CPF' => $value['CPF'], 'importado' => false, 'obs' => 'CPF Irregular'));
+            }
+            
+         }
+
+        return $data2;
+      
+    }
+
 }

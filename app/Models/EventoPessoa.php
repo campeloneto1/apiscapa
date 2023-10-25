@@ -22,7 +22,8 @@ class EventoPessoa extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        
+        'evento_id',
+        'pessoa_id',
     ];
 
     /**

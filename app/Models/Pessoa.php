@@ -23,7 +23,9 @@ class Pessoa extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        
+        'cpf',
+        'nome',
+        'key'
     ];
 
     /**
