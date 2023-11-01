@@ -82,6 +82,17 @@ class PessoasController extends Controller
         ->get();        
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function returnFaceMatcher()
+    {
+        return Pessoa::whereNotnull('face_matcher')
+        ->get();        
+    }
+
 
     /**
      * Store a newly created resource in storage.

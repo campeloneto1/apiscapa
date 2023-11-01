@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('pessoas', function (Blueprint $table) {
-            $table->string('face_matcher', 3000)->nullable();
+            $table->string('face_matcher', 3500)->nullable();
         });
     }
 

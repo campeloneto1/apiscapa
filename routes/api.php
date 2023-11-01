@@ -101,6 +101,9 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::post('upload-foto2', [PessoasController::class, 'uploadFoto2']);
 
     Route::post('update-foto', [PessoasController::class, 'updateFoto']);
+    Route::post('update-facematcher', [PessoasController::class, 'updateFaceMatcher']);
+
+    Route::get('pessoas-facematcher', [PessoasController::class, 'returnFaceMatcher']);
 
     Route::post('importar', [PessoasController::class, 'importar']);
 
